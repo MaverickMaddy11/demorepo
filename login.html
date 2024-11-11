@@ -1,0 +1,103 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
+
+    <script>
+        async function signup(){
+           
+            const username = document.getElementById("upname").value;
+            const password = document.getElementById("uppass").value;
+
+            await axios.post("http://localhost:3000/signup",{
+                username:username,password:password
+            })
+
+            const divi = document.createElement("div");
+            divi.innerHTML = "You have successfully signed up ";
+            document.querySelector(".message").append(divi)
+
+            
+            document.getElementById("upname").value = "";
+            document.getElementById("uppass").value="";
+
+        }
+
+        async function signin(){
+            const username = document.getElementById("inname").value;
+            const password = document.getElementById("inpass").value;
+ 
+            try{
+                console.log("hello there ");
+                const response = await axios.post("http://localhost:3000/signin",{
+                username:username,
+                password:password
+                    })
+                console.log("hello there 2 ");
+                const token = response.data.token;
+                localStorage.setItem("token",token)
+                document.getElementById("inname").value = "";
+                document.getElementById("inpass").value = "";
+                    
+                console.log(token);  
+
+            }
+            catch{
+                const divi = document.createElement("div");
+                divi.innerHTML = "wrong id or password  ";
+                document.querySelector(".message").append(divi) 
+
+            }
+        }
+
+        async function move(){
+        
+            //passing token
+            console.log(localStorage.getItem("token"));
+            console.log("inside the move function ")
+            const response = await axios.get("http://localhost:3000/todo",{
+                headers:{"token":localStorage.getItem("token")}
+            })
+            window.location.href = "/todo";
+        }
+        
+    </script>
+    
+</head>
+
+
+<body>
+
+    <div class="signin">
+        <div>signin</div>
+        <input type="text" placeholder="username" id = "inname">
+        <input type= "text" placeholder="password" id ="inpass" >
+        <button onclick="signin()" id = "inbut">sign in </button>
+
+    </div>
+
+    <div class="signup">
+        <div>signup</div>
+        <input type="text" placeholder="username" id="upname">
+        <input type ="password" placeholder="password" id = "uppass">
+        <button onclick="signup()" id ="upbut">signup</button>
+    </div>
+
+    <button id = "moveid" onclick = "move()">
+        move
+    </button>
+
+
+    <div class="message">
+        messgae box 
+    </div>
+
+
+
+    
+
+    
+</body>
+</html>

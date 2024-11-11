@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+
+        <title>TODO</title>
+        <link rel = "stylesheet" href="./main.css">
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="heading">
+                Todo Lists 
+            </div>
+            <input type="text" placeholder="enter todo" id = "inpbox" >
+            <button onclick="addtodo()" id="addbut">ADD</button>
+            
+            <div class ="todos">
+                
+            </div>
+            
+        </div>
+        <script>
+            function addtodo(){
+                const divi = document.createElement("div")
+                const todobox = document.createElement("div")
+                const delbut = document.createElement("button")
+                const mycheck = document.createElement("input")
+
+                mycheck.type = "checkbox"
+                
+                divi.setAttribute("class","divi")
+                mycheck.setAttribute("class","mycheck")
+                todobox.setAttribute("class","todobox")
+
+                divi.appendChild(mycheck);
+                divi.appendChild(todobox)
+                divi.appendChild(delbut)
+
+                todobox.setAttribute("id","todoboxid")
+                delbut.setAttribute("id","delbutid")
+                mycheck.setAttribute("id","mycheck")
+
+                if(document.getElementById("inpbox").value == "CLEAR!"){
+                    document.querySelector(".todos")
+                }
+
+                todobox.innerHTML = document.getElementById("inpbox").value;
+                delbut.innerHTML = "x"
+                delbut.onclick = function(){
+                    divi.parentNode.removeChild(divi)
+                }
+                
+                document.querySelector(".todos").appendChild(divi)
+                
+                document.getElementById("inpbox").value = ""
+
+                mycheck.addEventListener("change",function(){
+                    if(this.checked){
+                        todobox.classList.add("strikethrough")
+                    }
+                    else{
+                        todobox.classList.remove("strikethrough")
+                    }
+                })
+            }
+
+            
+
+            
+        </script>
+    </body>
+
+    
+
+    
+
+</html>

@@ -1,0 +1,80 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel = "stylesheet" href="index.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
+
+
+</head>
+<body>
+    <div class="container">
+        <div id="heading">TODO LIST</div>
+
+        <div class="one">
+            <input  id = "inpbox" type = "text" placeholder="TODO">
+            <button onclick="addtodo()">ADD</button>
+            <button >CLEAR</button>
+        </div>
+
+        <div id="todos"></div>
+        <button onclick="signout()">SIGN OUT</button>
+
+
+
+    </div>
+
+    <script>
+        let content = [];
+
+
+        function addtodo(){
+
+            const divi = document.createElement("div");
+            
+            divi.setAttribute("class","divi");
+
+            divi.innerHTML = document.getElementById("inpbox").value;
+            document.querySelector("#todos").appendChild(divi);
+
+            document.getElementById("inpbox").value = "";
+
+            content.push(document.getElementById("inpbox").value);
+
+        }
+
+        async function signout(){
+            // objective is to store all the data before signing out 
+            await axios.post("http://localhost:3000/storedata",{
+                contentarr:content,headers:localStorage.getItem("token")
+                
+            })
+
+            content = [];
+            localStorage.removeItem("token");
+            window.locatino.href = "/";
+        }
+
+        async function gettingdata(){
+            const response = await axios.get("http://localhost:3000/getdata",function(req,res){
+                headers:localStorage.getItem("token")
+            });
+            content = response.data.content;
+            for(let i = 0 ; i< content.length; i++){
+                const divi = document.createElement("div");
+                divi.setAttribute("class","divi");
+                divi.innerHTML = content[i];
+                document.querySelector("#todos").appendChild(divi);
+            }
+        }
+
+        function clear(){
+            document.getElementById("todos").innerHTML = "";
+        }
+
+    </script>
+    
+    
+</body>
+</html>
